@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Дождь">
+  <style>
+    @keyframes drop1 { 0%,100%{transform:translateY(0);opacity:1} 80%{transform:translateY(14px);opacity:0} }
+    @keyframes drop2 { 0%,100%{transform:translateY(0);opacity:1} 80%{transform:translateY(14px);opacity:0} }
+    @keyframes drop3 { 0%,100%{transform:translateY(0);opacity:1} 80%{transform:translateY(14px);opacity:0} }
+    .d1{animation:drop1 1.2s ease-in infinite;}
+    .d2{animation:drop2 1.2s ease-in 0.4s infinite;}
+    .d3{animation:drop3 1.2s ease-in 0.8s infinite;}
+  </style>
+  <path d="M48 28a16 16 0 0 0-32 0H14a10 10 0 0 0 0 20h36a10 10 0 0 0 0-20z" fill="#90A4AE"/>
+  <g fill="#2196F3">
+    <path class="d1" d="M22 52 Q22 58 26 58 Q30 58 30 52 Z"/>
+    <path class="d2" d="M30 52 Q30 58 34 58 Q38 58 38 52 Z"/>
+    <path class="d3" d="M38 52 Q38 58 42 58 Q46 58 46 52 Z"/>
+  </g>
+</svg>

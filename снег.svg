@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Снег">
+  <style>
+    @keyframes snowfall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(16px) rotate(180deg);opacity:0} }
+    .s1{animation:snowfall 2s ease-in infinite;}
+    .s2{animation:snowfall 2s ease-in 0.6s infinite;}
+    .s3{animation:snowfall 2s ease-in 1.2s infinite;}
+  </style>
+  <path d="M48 26a16 16 0 0 0-32 0H14a10 10 0 0 0 0 20h36a10 10 0 0 0 0-20z" fill="#B0BEC5"/>
+  <g stroke="#BBDEFB" stroke-width="2.5" stroke-linecap="round">
+    <g class="s1">
+      <line x1="20" y1="50" x2="20" y2="60"/><line x1="15" y1="55" x2="25" y2="55"/>
+      <line x1="16.5" y1="51.5" x2="23.5" y2="58.5"/><line x1="23.5" y1="51.5" x2="16.5" y2="58.5"/>
+    </g>
+    <g class="s2">
+      <line x1="32" y1="50" x2="32" y2="60"/><line x1="27" y1="55" x2="37" y2="55"/>
+      <line x1="28.5" y1="51.5" x2="35.5" y2="58.5"/><line x1="35.5" y1="51.5" x2="28.5" y2="58.5"/>
+    </g>
+    <g class="s3">
+      <line x1="44" y1="50" x2="44" y2="60"/><line x1="39" y1="55" x2="49" y2="55"/>
+      <line x1="40.5" y1="51.5" x2="47.5" y2="58.5"/><line x1="47.5" y1="51.5" x2="40.5" y2="58.5"/>
+    </g>
+  </g>
+</svg>

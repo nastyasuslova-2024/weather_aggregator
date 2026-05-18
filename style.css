@@ -1,0 +1,963 @@
+/* Сброс и базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Цвета и переменные */
+:root {
+    --солнечный-фон: linear-gradient(135deg, #6dd5ed, #2193b0);
+    --дождливый-фон: linear-gradient(135deg, #636363, #a2ab58);
+    --снежный-фон: linear-gradient(135deg, #83a4d4, #b6fbff);
+    --карточка-фон: rgba(255, 255, 255, 0.95);
+    --текст-темный: #333333;
+    --текст-светлый: #f8f9fa;
+    --тень: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --скругление: 20px;
+}
+
+/* Основной фон страницы */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--солнечный-фон);
+    background-image: var(--солнечный-фон), url('солнечный-паттерн.svg');
+    background-blend-mode: normal;
+    background-size: cover, 200px 200px;
+    color: var(--текст-темный);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+    transition: background 0.5s ease;
+}
+
+/* Состояния фона */
+body.rainy {
+    background: var(--дождливый-фон);
+    background-image: var(--дождливый-фон), url('дождливый-паттерн.svg');
+    background-blend-mode: normal;
+    background-size: cover, 200px 200px;
+}
+body.snowy {
+    background: var(--снежный-фон);
+    background-image: var(--снежный-фон), url('снежный-паттерн.svg');
+    background-blend-mode: normal;
+    background-size: cover, 200px 200px;
+}
+
+/* Контейнер */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Шапка */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--карточка-фон);
+    border-radius: var(--скругление);
+    box-shadow: var(--тень);
+}
+
+/* Логотип */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo i {
+    font-size: 2.5rem;
+    color: #ff9800;
+}
+
+.logo h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #2193b0;
+}
+
+/* Поиск */
+.search-bar {
+    display: flex;
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 20px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px 0 0 50px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-bar input:focus {
+    border-color: #2193b0;
+}
+
+.search-bar button {
+    background: #2193b0;
+    color: white;
+    border: none;
+    border-radius: 0 50px 50px 0;
+    padding: 0 25px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* Информация о местоположении */
+.location-info {
+    text-align: right;
+}
+
+.location-info p {
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.location-info i {
+    margin-right: 8px;
+    color: #2193b0;
+}
+
+/* Основной контент */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Выбор типа погоды */
+.weather-state-selector {
+    background: var(--карточка-фон);
+    border-radius: var(--скругление);
+    padding: 20px;
+    box-shadow: var(--тень);
+}
+
+.weather-state-selector h3 {
+    margin-bottom: 15px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+}
+
+.state-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.state-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 25px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.state-btn.active {
+    background: #2193b0;
+    color: white;
+    border-color: #2193b0;
+}
+
+.state-btn:hover:not(.active) {
+    border-color: #2193b0;
+    color: #2193b0;
+}
+
+.state-btn i {
+    font-size: 1.2rem;
+}
+
+/* Текущая погода */
+.current-weather-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* Карточки */
+.current-weather-card,
+.settings-panel,
+.hourly-forecast,
+.weekly-forecast,
+.precipitation-map {
+    background: var(--карточка-фон);
+    border-radius: var(--скругление);
+    padding: 30px;
+    box-shadow: var(--тень);
+    height: 100%;
+    min-height: 400px;
+}
+
+.current-weather-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Основная информация о погоде */
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.temperature h2 {
+    font-size: 4rem;
+    font-weight: 300;
+    color: #2193b0;
+    line-height: 1;
+}
+
+.feels-like {
+    color: #666;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.weather-icon {
+    font-size: 5rem;
+    color: #4a90e2;
+}
+
+body.rainy .weather-icon { color: #4a90e2; }
+body.snowy .weather-icon { color: #bbdefb; }
+
+/* Детали погоды */
+.weather-details h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.weather-details p {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.weather-details i {
+    width: 24px;
+    margin-right: 10px;
+    color: #2193b0;
+}
+
+/* Солнце */
+.sun-info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.sun-info p {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.sun-info i {
+    margin-right: 10px;
+    color: #ff9800;
+    font-size: 1.2rem;
+}
+
+/* Панель настроек */
+.settings-panel h3 {
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.unit-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.unit-option {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.unit-option label {
+    font-weight: 500;
+    color: #555;
+}
+
+.unit-option select {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    background: white;
+    cursor: pointer;
+}
+
+.unit-option select:focus {
+    border-color: #2193b0;
+}
+
+.apply-btn, .location-btn {
+    margin-top: 15px;
+    padding: 15px;
+    width: 100%;
+    background: #2193b0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.location-btn {
+    background: #4CAF50;
+}
+
+.apply-btn:hover {
+    background: #1a7a8f;
+}
+
+.location-btn:hover {
+    background: #3d8b40;
+}
+
+/* Прогноз */
+.forecast-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+/* Почасовой прогноз */
+.hourly-forecast h3,
+.weekly-forecast h3 {
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.hourly-scroll {
+    display: flex;
+    overflow-x: auto;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.hourly-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.hourly-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.hour-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 15px 10px;
+    background: rgba(33, 147, 176, 0.1);
+    border-radius: 15px;
+    text-align: center;
+    flex-shrink: 0; /* Предотвращает сжатие на мобильных */
+}
+
+.hour-item .time {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.hour-item .hour-temp {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.hour-item .hour-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #2193b0;
+}
+
+/* Недельный прогноз */
+.weekly-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.day-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(33, 147, 176, 0.1);
+    border-radius: 10px;
+}
+
+.day-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.day-name {
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.day-icon {
+    font-size: 1.8rem;
+    width: 40px;
+    text-align: center;
+    color: #2193b0;
+}
+
+.day-temps {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.day-high {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.day-low {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* Карта осадков */
+.precipitation-map h3 {
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 20px;
+}
+
+.map-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(33, 147, 176, 0.1);
+    border-radius: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.legend-color.sunny { background: #ffeb3b; }
+.legend-color.cloudy { background: #bdbdbd; }
+.legend-color.rain { background: #2196f3; }
+.legend-color.snow { background: #bbdefb; }
+
+/* Изменения для карты осадков - добавляем горизонтальную прокрутку */
+.map-visualization {
+    height: 100%;
+    min-height: 300px;
+    border-radius: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    background: rgba(33, 147, 176, 0.1);
+    display: flex;
+    white-space: nowrap;
+    padding: 10px;
+    -webkit-overflow-scrolling: touch; /* Для плавной прокрутки на iOS */
+    scrollbar-width: thin;
+}
+
+.map-visualization::-webkit-scrollbar {
+    height: 8px;
+}
+
+.map-visualization::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.map-controls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.map-cell {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+    width: 120px; /* Фиксированная ширина для каждой ячейки */
+    height: 100%;
+    min-height: 280px;
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 15px 10px;
+    text-align: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.map-time {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    white-space: normal;
+}
+
+.map-icon {
+    font-size: 2rem;
+    margin: 15px 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-humidity {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    color: #555;
+    font-weight: 600;
+}
+
+.map-temp {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.map-pop {
+    font-size: 0.75rem;
+    margin-top: 5px;
+    color: #666;
+}
+
+/* Индикатор загрузки */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loading-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.loading-message i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #2193b0;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    z-index: 1000;
+    padding: 15px 25px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-weight: 500;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* SVG-иконки погодных состояний в кнопках выбора фона */
+.state-btn img.weather-svg {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    object-fit: contain;
+}
+
+/* Текстурные плашки для карты осадков */
+.map-cell.sunny  { background-image: url('солнечно-ячейка.svg'),  none; background-size: 40px 40px, auto; }
+.map-cell.cloudy { background-image: url('облачно-ячейка.svg'), none; background-size: 40px 40px, auto; }
+.map-cell.rain   { background-image: url('дождь-ячейка.svg'),   none; background-size: 40px 40px, auto; }
+.map-cell.snow   { background-image: url('снег-ячейка.svg'),   none; background-size: 40px 40px, auto; }
+
+/* Улучшенные цвета легенды с градиентами */
+.legend-color.sunny  { background: linear-gradient(135deg, #FFE082, #FFD600); }
+.legend-color.cloudy { background: linear-gradient(135deg, #ECEFF1, #B0BEC5); }
+.legend-color.rain   { background: linear-gradient(135deg, #42A5F5, #1565C0); }
+.legend-color.snow   { background: linear-gradient(135deg, #E3F2FD, #90CAF9); }
+
+/* SVG-иконка логотипа (заменяет Font Awesome .logo i) */
+.logo-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: block;
+    flex-shrink: 0;
+}
+
+/* Иконки погоды в почасовом прогнозе: адаптивный размер */
+.hour-item img.weather-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
+}
+
+/* settings-panel: перенос на новой строке для мобильных */
+.settings-panel .unit-controls {
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .hour-item img.weather-icon-img {
+        width: 32px;
+        height: 32px;
+    }
+    .settings-panel .unit-controls {
+        flex-wrap: wrap;
+    }
+}
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: var(--карточка-фон);
+    border-radius: var(--скругление);
+    box-shadow: var(--тень);
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 30px;
+}
+
+.footer p:first-child {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 1200px) {
+    .current-weather-container,
+    .forecast-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .weather-main {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .map-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .search-bar {
+        max-width: 100%;
+        margin: 10px 0;
+        width: 100%;
+        order: 3;
+    }
+    
+    .location-info {
+        order: 2;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .temperature h2 {
+        font-size: 3rem;
+    }
+    
+    .weather-icon {
+        font-size: 4rem;
+    }
+    
+    .state-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .state-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .day-item {
+        flex-direction: row;
+        padding: 12px 15px;
+    }
+    
+    .day-name {
+        min-width: 80px;
+        font-size: 0.9rem;
+    }
+    
+    .day-icon {
+        font-size: 1.5rem;
+    }
+    
+    .hour-item {
+        min-width: 85px;
+        padding: 12px 8px;
+    }
+    
+    .hour-item .time {
+        font-size: 0.8rem;
+    }
+    
+    .hour-item .hour-temp {
+        font-size: 1.3rem;
+    }
+    
+    .hour-item .hour-icon {
+        font-size: 1.8rem;
+    }
+    
+    .map-cell {
+        width: 110px;
+        min-height: 250px;
+        padding: 12px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .map-time {
+        font-size: 0.8rem;
+    }
+    
+    .map-icon {
+        font-size: 1.8rem;
+        margin: 10px 0;
+    }
+    
+    .map-humidity {
+        font-size: 0.75rem;
+    }
+    
+    .map-temp {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+    
+    .temperature h2 {
+        font-size: 2.5rem;
+    }
+    
+    .weather-icon {
+        font-size: 3rem;
+    }
+    
+    .current-weather-card,
+    .settings-panel,
+    .hourly-forecast,
+    .weekly-forecast,
+    .precipitation-map {
+        padding: 20px;
+        min-height: 350px;
+    }
+    
+    .day-item {
+        padding: 10px 12px;
+    }
+    
+    .day-name {
+        min-width: 70px;
+        font-size: 0.85rem;
+    }
+    
+    .day-high, .day-low {
+        font-size: 1rem;
+    }
+    
+    .hour-item {
+        min-width: 75px;
+        padding: 10px 5px;
+    }
+    
+    .hour-item .time {
+        font-size: 0.75rem;
+    }
+    
+    .hour-item .hour-temp {
+        font-size: 1.1rem;
+    }
+    
+    .hour-item .hour-icon {
+        font-size: 1.5rem;
+    }
+    
+    .map-cell {
+        width: 100px;
+        min-height: 230px;
+        padding: 10px 6px;
+        font-size: 0.75rem;
+    }
+    
+    .map-time {
+        font-size: 0.75rem;
+    }
+    
+    .map-icon {
+        font-size: 1.5rem;
+        margin: 8px 0;
+    }
+    
+    .map-humidity {
+        font-size: 0.7rem;
+    }
+    
+    .map-temp {
+        font-size: 0.9rem;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+    .hour-item {
+        min-width: 70px;
+    }
+    
+    .map-cell {
+        width: 90px;
+        min-height: 220px;
+        padding: 8px 5px;
+    }
+    
+    .map-time {
+        font-size: 0.7rem;
+    }
+}
+
+/* ... все существующие стили остаются ... */
+
+/* Добавляем стиль для кнопки звука в шапке */
+.sound-toggle {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #2193b0;
+    transition: all 0.2s ease;
+    margin-left: 15px;
+    backdrop-filter: blur(5px);
+}
+.sound-toggle:hover {
+    background: rgba(255,255,255,0.4);
+    transform: scale(1.05);
+}
+.sound-toggle.muted {
+    color: #999;
+}
+@media (max-width: 768px) {
+    .sound-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    .header {
+        position: relative;
+    }
+}

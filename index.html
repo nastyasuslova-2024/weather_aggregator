@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Агрегатор погоды</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <!-- Анимированная SVG-иконка логотипа (декоративная, aria-hidden) -->
+                <svg class="logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <style>@keyframes logo-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.logo-rays{animation:logo-rotate 10s linear infinite;transform-origin:32px 32px;}</style>
+                    <circle cx="32" cy="32" r="13" fill="#ff9800"/>
+                    <g class="logo-rays" stroke="#ff9800" stroke-width="3" stroke-linecap="round">
+                        <line x1="32" y1="4" x2="32" y2="11"/><line x1="32" y1="53" x2="32" y2="60"/>
+                        <line x1="4" y1="32" x2="11" y2="32"/><line x1="53" y1="32" x2="60" y2="32"/>
+                        <line x1="11.5" y1="11.5" x2="16.5" y2="16.5"/><line x1="47.5" y1="47.5" x2="52.5" y2="52.5"/>
+                        <line x1="52.5" y1="11.5" x2="47.5" y2="16.5"/><line x1="16.5" y1="47.5" x2="11.5" y2="52.5"/>
+                    </g>
+                </svg>
+                <h1>Агрегатор погоды</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="city-input" placeholder="Введите город">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="location-info">
+                <p><i class="fas fa-map-marker-alt"></i> <span id="current-city">Определение местоположения...</span></p>
+                <p id="current-date">Загрузка...</p>
+            </div>
+            <!-- Новая кнопка управления звуком -->
+            <button id="sound-toggle-btn" class="sound-toggle" aria-label="Включить/выключить звук">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <div class="weather-state-selector">
+                <h3><i class="fas fa-cloud-sun"></i> Выберите тип погоды (фон)</h3>
+                <div class="state-buttons">
+                    <button class="state-btn active" data-state="sunny" data-gif="sunny">
+                        <picture>
+                            <source srcset="солнечно.svg" type="image/svg+xml">
+                            <img src="солнечно.svg" alt="Солнечно" width="28" height="28" loading="eager" class="weather-svg">
+                        </picture>
+                        Солнечно
+                    </button>
+                    <button class="state-btn" data-state="rainy" data-gif="rainy">
+                        <picture>
+                            <source srcset="дождь.svg" type="image/svg+xml">
+                            <img src="дождь.svg" alt="Дождь" width="28" height="28" loading="eager" class="weather-svg">
+                        </picture>
+                        Дождь
+                    </button>
+                    <button class="state-btn" data-state="snowy" data-gif="snowy">
+                        <picture>
+                            <source srcset="снег.svg" type="image/svg+xml">
+                            <img src="снег.svg" alt="Снег" width="28" height="28" loading="eager" class="weather-svg">
+                        </picture>
+                        Снег
+                    </button>
+                </div>
+            </div>
+
+            <div class="current-weather-container">
+                <div class="current-weather-card">
+                    <div class="weather-main">
+                        <div class="temperature">
+                            <h2 id="current-temp">--°C</h2>
+                            <p class="feels-like">Ощущается как <span id="feels-like">--°C</span></p>
+                        </div>
+                        <div class="weather-icon" id="main-weather-icon">
+                            <!-- SVG-иконка солнца (оранжевая, анимированная) -->
+                            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:90px;height:90px">
+                                <style>@keyframes ph-rot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.ph-rays{animation:ph-rot 10s linear infinite;transform-origin:32px 32px;}</style>
+                                <circle cx="32" cy="32" r="13" fill="#FF8C00"/>
+                                <g class="ph-rays" stroke="#FF8C00" stroke-width="3" stroke-linecap="round">
+                                    <line x1="32" y1="4" x2="32" y2="11"/><line x1="32" y1="53" x2="32" y2="60"/>
+                                    <line x1="4" y1="32" x2="11" y2="32"/><line x1="53" y1="32" x2="60" y2="32"/>
+                                    <line x1="11.5" y1="11.5" x2="16.5" y2="16.5"/><line x1="47.5" y1="47.5" x2="52.5" y2="52.5"/>
+                                    <line x1="52.5" y1="11.5" x2="47.5" y2="16.5"/><line x1="16.5" y1="47.5" x2="11.5" y2="52.5"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="weather-details">
+                            <h3 id="current-weather-desc">Загрузка...</h3>
+                            <p><i class="fas fa-wind"></i> Ветер: <span id="wind-speed">-- км/ч</span></p>
+                            <p><i class="fas fa-tint"></i> Влажность: <span id="humidity">--%</span></p>
+                            <p><i class="fas fa-tachometer-alt"></i> Давление: <span id="pressure">-- мм рт.ст.</span></p>
+                        </div>
+                    </div>
+                    <div class="sun-info">
+                        <p><i class="fas fa-sunrise"></i> Восход: <span id="sunrise">--:--</span></p>
+                        <p><i class="fas fa-sunset"></i> Закат: <span id="sunset">--:--</span></p>
+                        <p><i class="fas fa-clock"></i> Долгота дня: <span id="day-length">--ч --м</span></p>
+                    </div>
+                </div>
+
+                <div class="settings-panel">
+                    <h3><i class="fas fa-sliders-h"></i> Настройки единиц измерения</h3>
+                    <div class="unit-controls">
+                        <div class="unit-option">
+                            <label for="temp-unit">Температура:</label>
+                            <select id="temp-unit">
+                                <option value="celsius">Цельсий (°C)</option>
+                                <option value="fahrenheit">Фаренгейт (°F)</option>
+                            </select>
+                        </div>
+                        <div class="unit-option">
+                            <label for="wind-unit">Скорость ветра:</label>
+                            <select id="wind-unit">
+                                <option value="kmh">км/ч</option>
+                                <option value="mph">миль/ч</option>
+                                <option value="ms">м/с</option>
+                            </select>
+                        </div>
+                        <div class="unit-option">
+                            <label for="pressure-unit">Давление:</label>
+                            <select id="pressure-unit">
+                                <option value="mmHg">мм рт.ст.</option>
+                                <option value="hPa">гПа</option>
+                                <option value="atm">атм</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="apply-settings" class="apply-btn">
+                        <i class="fas fa-check"></i> Применить настройки
+                    </button>
+                    <button id="get-location-btn" class="location-btn">
+                        <i class="fas fa-location-arrow"></i> Моё местоположение
+                    </button>
+                </div>
+            </div>
+
+            <div class="forecast-container">
+                <div class="hourly-forecast">
+                    <h3><i class="fas fa-clock"></i> Почасовой прогноз (24 часа)</h3>
+                    <div class="hourly-scroll" id="hourly-forecast">
+                        <div class="hour-item">
+                            <div class="time">Загрузка...</div>
+                            <div class="hour-icon"><i class="fas fa-cloud"></i></div>
+                            <div class="hour-temp">--°C</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weekly-forecast">
+                    <h3><i class="fas fa-calendar-alt"></i> Прогноз на неделю</h3>
+                    <div class="weekly-list" id="weekly-forecast">
+                        <div class="day-item">
+                            <div class="day-info">
+                                <div class="day-name">Загрузка...</div>
+                                <div class="day-icon"><i class="fas fa-cloud"></i></div>
+                            </div>
+                            <div class="day-temps">
+                                <div class="day-high">--°C</div>
+                                <div class="day-low">--°C</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="precipitation-map">
+                <h3><i class="fas fa-map"></i> Карта осадков (24 часа)</h3>
+                <div class="map-container">
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="legend-color sunny"></div>
+                            <span>Ясно</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color cloudy"></div>
+                            <span>Облачно</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color rain"></div>
+                            <span>Дождь</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color snow"></div>
+                            <span>Снег</span>
+                        </div>
+                    </div>
+                    <div class="map-visualization" id="precipitation-map">
+                        <div class="loading-message">
+                            <i class="fas fa-sync-alt fa-spin"></i>
+                            <p>Загрузка карты осадков...</p>
+                        </div>
+                    </div>
+                    <div class="map-controls">
+                        <button id="refresh-map" title="Обновить карту">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Агрегатор погоды © 2025 | Данные обновлены: <span id="update-time">--:--</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
